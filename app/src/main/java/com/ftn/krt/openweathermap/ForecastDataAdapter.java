@@ -1,6 +1,8 @@
 package com.ftn.krt.openweathermap;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * Created by nikola on 5/9/15.
@@ -27,6 +34,10 @@ public class ForecastDataAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         int val;
+
+        if(mDailyForecast == null) {
+            return 0;
+        }
         try {
             val = mDailyForecast.getInt("cnt");
         } catch (Exception e) {
@@ -68,11 +79,44 @@ public class ForecastDataAdapter extends BaseAdapter {
 
         ImageView image = (ImageView)view.findViewById(R.id.image);
         TextView  text  = (TextView)view.findViewById(R.id.text);
+        TextView  min = (TextView)view.findViewById(R.id.min);
+        TextView  max = (TextView)view.findViewById(R.id.max);
+        TextView  date = (TextView)view.findViewById(R.id.date);
 
-        JSONObject o = (JSONObject)getItem(position);
-        text.setText(o.toString());
+        SimpleDateFormat df = new SimpleDateFormat("dd MMM ''yy");
 
-        Log.d(TAG, "Calling adapter with position: " + position);
+
+        JSONObject obj = (JSONObject)getItem(position);
+
+        if(obj == null) {
+            return view;
+        }
+
+        try {
+            String s_image;
+            byte[] b_image;
+            s_image = obj.getString("icon_img");
+            b_image = Base64.decode(s_image, Base64.DEFAULT);
+            image.setImageBitmap(BitmapFactory.decodeByteArray(b_image,0,b_image.length));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject temp = obj.getJSONObject("temp");
+            min.setText(Integer.toString(temp.getInt("min")));
+            max.setText(Integer.toString(temp.getInt("max")));
+
+            Date d = new Date(obj.getLong("dt")*1000);
+
+            date.setText(df.format(d));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return view;
     }

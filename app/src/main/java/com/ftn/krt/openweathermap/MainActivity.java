@@ -123,8 +123,6 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
     @Override
     public void pushForecastData(String forecastData) {
         try {
-            int cnt = mList.getCount();
-            Log.d(TAG, "ListView cnt: " + Integer.toString(cnt));
             JSONObject o = new JSONObject(forecastData);
             mAdapter.setData(o);
             mSwipeLayout.setRefreshing(false);
