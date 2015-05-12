@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONException;
@@ -37,6 +39,9 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
 
         mSwipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
+
+        ImageButton fabImageButton = (ImageButton)findViewById(R.id.fab_image_button);
+        fabImageButton.setOnClickListener(new FabListener());
 
     }
 
@@ -126,5 +131,13 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
         }
 
         Log.d(TAG, "Ok, I got the data");
+    }
+
+    class FabListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Log.d(TAG, "FAB clicked!");
+        }
     }
 }
