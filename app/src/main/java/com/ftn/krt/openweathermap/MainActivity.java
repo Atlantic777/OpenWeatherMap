@@ -137,7 +137,20 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
 
         @Override
         public void onClick(View v) {
+            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+            startActivityForResult(i, 0);
             Log.d(TAG, "FAB clicked!");
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 0) {
+            if(resultCode == RESULT_OK) {
+                Log.d(TAG, "User finished search");
+            }
+            else if(resultCode == RESULT_CANCELED) {
+                Log.d(TAG, "User canceled search");
+            }
         }
     }
 }
