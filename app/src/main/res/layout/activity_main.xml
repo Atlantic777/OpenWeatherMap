@@ -11,27 +11,33 @@
     android:orientation="vertical"
     android:id="@+id/main_layout">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/city_input"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/country_input"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current city"
+            android:textSize="40sp"
+            android:id="@+id/city"/>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Click me"
-        android:id="@+id/the_button"
-        android:onClick="buttonClicked"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current country"
+            android:textSize="25sp"
+            android:id="@+id/country" />
+
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipe_container">
+        android:layout_height="0dp"
+        android:id="@+id/swipe_container"
+        android:layout_weight="4">
 
         <ListView
             android:layout_width="fill_parent"

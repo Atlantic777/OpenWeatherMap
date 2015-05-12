@@ -85,7 +85,12 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
 
     @Override
     public void onRefresh() {
-        buttonClicked(findViewById(R.id.the_button));
+        mSwipeLayout.setRefreshing(true);
+        Log.d(TAG, Boolean.toString(mBound));
+        if (mBound) {
+            mService.forceFetch();
+            Log.d(TAG, "Called the ForecastDataService");
+        }
     }
 
     class ForecastServiceConnection implements ServiceConnection {
@@ -107,16 +112,6 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mBound = false;
-        }
-    };
-
-    @SuppressWarnings("unused")
-    public void buttonClicked(View view) {
-        mSwipeLayout.setRefreshing(true);
-        Log.d(TAG, Boolean.toString(mBound));
-        if (mBound) {
-            mService.forceFetch();
-            Log.d(TAG, "Called the ForecastDataService");
         }
     }
 
