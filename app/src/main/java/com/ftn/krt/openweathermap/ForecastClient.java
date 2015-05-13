@@ -16,7 +16,16 @@
  *
  * \file ForecastClient.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of ForecastClient class,
+ *      a HTTP client for fetching 5 days daily forecast data for
+ *      particular city by it's ID.
+ *
+ *      It also fetched weather icons from OpenWeatherMap service
+ *      by ID stored in forecast data.
+ *
+ *      It notifies a listener and pushes a string containing
+ *      JSON formatted data.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
@@ -39,10 +48,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 
-/**
- * Created by nikola on 5/7/15.
- *
- */
 @SuppressWarnings("FieldCanBeLocal")
 public class ForecastClient extends AsyncTask<String, String, String> {
     private ForecastDataListener mListener;
