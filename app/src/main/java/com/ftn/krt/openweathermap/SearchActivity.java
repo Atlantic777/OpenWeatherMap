@@ -16,7 +16,27 @@
  *
  * \file SearchActivity.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of SearchActivity class.
+ *      This activity is used for searching for cities and changing.
+ *
+ *      Country input field and search button are by default disabled and
+ *      will be enabled when user enters at least city name.
+ *
+ *      When search button is clicked, it will spawn a CityClient, connect
+ *      itself as a listener and start refresh animation. When data arrives,
+ *      refresh animation will stop and information about cities will be present
+ *      in a ListView in bottom part of the screen.
+ *
+ *      Choosing an item in list by pressing it will send that city ID to the
+ *      main activity, stop search activity and start main activity where
+ *      forecast data will be queued for fetching and showing.
+ *
+ *      Another way for leaving this activity is by pressing the cancel button
+ *      which will stop this activity and start again the main activity with
+ *      last known location ID.
+ *
+ *      WARNING: empty list probably means that search didn't return any results.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
