@@ -16,7 +16,18 @@
  * 
  * \file CityClient.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of a HTTP client for
+ *      fetching list of data about cities available in remote service.
+ *
+ *      It has to be initialized with a reference to object which implements
+ *      the CityDataListener interface.
+ *
+ *      This client needs 2 String params to be executed (city and country name),
+ *      and country name can be an empty string.
+ *
+ *      Upon execution, it notifies attached listener and pushes a String
+ *      containing downloaded data in JSON format.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
@@ -48,6 +59,11 @@ public class CityClient extends AsyncTask<String, String, String> {
         mListener = listener;
     }
 
+    /**
+     * Work needed to be done as background job in a separate thread.
+     * @param params - array of strings, two needed (city and country)
+     * @return - String containing JSON formatted data
+     */
     @Override
     protected String doInBackground(String... params) {
         HttpClient httpClient = new DefaultHttpClient();
@@ -75,11 +91,25 @@ public class CityClient extends AsyncTask<String, String, String> {
         return responseString;
     }
 
+    /**
+     * Notifies the listener when data downloading is finished
+     * @param result - String containing JSON data
+     */
     @Override
     protected void onPostExecute(String result) {
         mListener.pushCityData(result);
     }
 
+    /**
+     * Helper method for compiling request URL.
+     *
+     * This method deals with HTTP encoding, removes whitespaces and decides
+     * whether or not user specified country.
+     *
+     * @param city - string containing city name
+     * @param country - string containing country name
+     * @return - compiled request URL with HTTP encoding escape sequences
+     */
     private String composeURL(String city, String country) {
         String cityName = "";
         String countryName = "";
