@@ -19,7 +19,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:minHeight="75sp"
             android:layout_marginBottom="32dp"
             android:layout_weight="1"
             android:background="@color/background_material_light"
@@ -33,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="Current city"
                 android:textColor="@color/primary_text_default_material_light"
-                android:textSize="40sp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/country"
@@ -41,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:text="Current country"
                 android:textColor="@color/primary_text_default_material_light"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
