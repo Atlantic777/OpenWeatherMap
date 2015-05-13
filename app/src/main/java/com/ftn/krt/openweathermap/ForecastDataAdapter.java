@@ -16,7 +16,18 @@
  *
  * \file ForecastDataAdapter.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of ForecastDataAdapter class
+ *      which is used for inflating and presentation of forecast data.
+ *
+ *      Data is whole JSON object received as response to request. New data
+ *      can be set by calling the setData() method.
+ *
+ *      It inflates forecast_data_row layout.
+ *
+ *      It will put weather icon, min and max temperature,
+ *      temperatures for morning, evening and night,
+ *      date and verbose weather description.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
@@ -41,11 +52,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-/**
- * Created by nikola on 5/9/15.
- *
- */
 public class ForecastDataAdapter extends BaseAdapter {
     private JSONObject mDailyForecast;
     private Context mContext;
