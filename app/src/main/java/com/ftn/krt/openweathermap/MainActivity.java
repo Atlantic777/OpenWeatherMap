@@ -27,7 +27,7 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
     private ListView mList;
     private SwipeRefreshLayout mSwipeLayout;
     private final String TAG = "MAIN_ACTIVITY";
-    private String mLocationID = "";
+    private String mLocationID = "3194360";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +132,16 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
 
     @Override
     public void pushForecastData(String forecastData) {
+        TextView city = (TextView)findViewById(R.id.city);
+        TextView country = (TextView)findViewById(R.id.country);
+
         try {
             JSONObject o = new JSONObject(forecastData);
+            JSONObject c = o.getJSONObject("city");
+
+            city.setText(c.getString("name"));
+            country.setText(c.getString("country"));
+
             mAdapter.setData(o);
             mSwipeLayout.setRefreshing(false);
         } catch (JSONException e) {
