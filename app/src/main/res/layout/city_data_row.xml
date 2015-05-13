@@ -2,38 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
+
+    <TextView
+        android:id="@+id/city_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="City"/>
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/city_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="City"/>
 
         <TextView
             android:id="@+id/country_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Country"
-            android:textSize="24sp"/>
+            android:textSize="15sp"/>
 
+        <TextView
+            android:id="@+id/city_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="ID: 11111"
+            android:textSize="16sp"
+            android:layout_gravity="bottom"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/city_id"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="ID: 11111"
-        android:textSize="16sp"
-        android:layout_gravity="bottom"/>
+
 
 </LinearLayout>
