@@ -11,6 +11,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * Created by nikola on 5/13/15.
@@ -30,8 +33,20 @@ public class CityClient extends AsyncTask<String,String,String> {
         HttpResponse response;
         String responseString = null;
 
+
+
         try {
-            String complete_url = city_url + params[0] + "," + params[1];
+            String city_name = URLEncoder.encode(params[0], "US-ASCII");
+            String country_name = URLEncoder.encode(params[1], "US-ASCII");
+
+            String complete_url = city_url + city_name;
+
+            if(params[1].length() > 0) {
+                complete_url = complete_url + "," + country_name;
+            }
+
+            Log.d(TAG, complete_url);
+
             response = httpClient.execute(new HttpGet(complete_url));
             StatusLine statusLine = response.getStatusLine();
 

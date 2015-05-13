@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,7 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
         mAdapter = new CityDataAdapter(this);
         ListView list = (ListView)findViewById(R.id.search_list);
         list.setAdapter(mAdapter);
+        list.setOnItemClickListener(new CityItemClickListener());
 
         return true;
     }
@@ -93,6 +96,15 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
             CityClient a = new CityClient(mListener);
 
             a.execute(city.getText().toString(),country.getText().toString());
+        }
+    }
+
+    class CityItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView city_id = (TextView)view.findViewById(R.id.city_id);
+            Log.d(TAG, "User clicked on: " + city_id.getText().toString());
         }
     }
 }
