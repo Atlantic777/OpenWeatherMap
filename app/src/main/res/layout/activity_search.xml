@@ -38,10 +38,16 @@
             android:text="@string/search_positive_text"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/search_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/cities_swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </ListView>
+        <ListView
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

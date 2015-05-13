@@ -1,6 +1,7 @@
 package com.ftn.krt.openweathermap;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,17 +21,12 @@ import org.json.JSONObject;
 public class SearchActivity extends ActionBarActivity implements CityDataListener {
     private final String TAG = "SEARCH_ACTIVITY";
     private CityDataAdapter mAdapter;
+    private SwipeRefreshLayout mSwipeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         Button cancel = (Button)findViewById(R.id.search_negative);
         Button search = (Button)findViewById(R.id.search_positive);
@@ -42,6 +38,14 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
         ListView list = (ListView)findViewById(R.id.search_list);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(new CityItemClickListener());
+
+        mSwipeLayout = (SwipeRefreshLayout)findViewById(R.id.cities_swipe_container);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
 
         return true;
     }
@@ -63,10 +67,12 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
 
     @Override
     public void pushCityData(String cityData) {
+        mSwipeLayout.setRefreshing(false);
+
         try {
             JSONObject obj = new JSONObject(cityData);
             mAdapter.setData(obj);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -96,6 +102,8 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
             CityClient a = new CityClient(mListener);
 
             a.execute(city.getText().toString(),country.getText().toString());
+
+            mSwipeLayout.setRefreshing(true);
         }
     }
 

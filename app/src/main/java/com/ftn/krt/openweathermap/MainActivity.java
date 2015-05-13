@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,11 +21,11 @@ import org.json.JSONObject;
 
 
 public class MainActivity extends ActionBarActivity implements ForecastDataListener, SwipeRefreshLayout.OnRefreshListener {
-    ForecastDataService mService;
-    boolean mBound = false;
-    ForecastDataAdapter mAdapter;
-    ListView mList;
-    SwipeRefreshLayout mSwipeLayout;
+    private ForecastDataService mService;
+    private boolean mBound = false;
+    private ForecastDataAdapter mAdapter;
+    private ListView mList;
+    private SwipeRefreshLayout mSwipeLayout;
     private final String TAG = "MAIN_ACTIVITY";
     private String mLocationID = "";
 
@@ -39,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
         mList = (ListView)findViewById(R.id.list);
         mList.setAdapter(mAdapter);
 
-        mSwipeLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
+        mSwipeLayout = (SwipeRefreshLayout)findViewById(R.id.forecast_swipe_container);
         mSwipeLayout.setOnRefreshListener(this);
 
         ImageButton fabImageButton = (ImageButton)findViewById(R.id.fab_image_button);
