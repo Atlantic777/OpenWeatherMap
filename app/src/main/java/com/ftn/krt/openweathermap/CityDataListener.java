@@ -16,7 +16,10 @@
  *
  * \file CityDataListener.java
  * \brief
- *      This file contains...
+ *      This file contains definition of CityDataListener interface
+ *      which is needed for connecting an object that needs to get
+ *      information on city search results.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
