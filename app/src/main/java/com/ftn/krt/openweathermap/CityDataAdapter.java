@@ -8,12 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 /**
  * Created by nikola on 5/13/15.
+ *
  */
-public class CityDataAdapter extends BaseAdapter{
+
+public class CityDataAdapter extends BaseAdapter {
     private JSONObject mCityData;
     private Context mContext;
 
@@ -23,18 +24,15 @@ public class CityDataAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        int val;
+        int val = 0;
 
-        if(mCityData == null) {
-            return 0;
-        }
+        if (mCityData != null) {
+            try {
+                val = mCityData.getInt("count");
 
-        try {
-            val = mCityData.getInt("count");
-
-        } catch (Exception e) {
-            val = 0;
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return val;
@@ -42,14 +40,16 @@ public class CityDataAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        Object rv;
+        Object rv = null;
 
-        try {
-            rv = mCityData.getJSONArray("list").get(position);
-        } catch (Exception e) {
-            rv = null;
-            e.printStackTrace();
+        if(mCityData != null) {
+            try {
+                rv = mCityData.getJSONArray("list").get(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         return rv;
     }
 
@@ -62,32 +62,33 @@ public class CityDataAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        if(view == null) {
-            LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(
+        if (view == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
+
             view = inflater.inflate(R.layout.city_data_row, null);
         }
 
-        TextView city = (TextView)view.findViewById(R.id.city_name);
-        TextView country = (TextView)view.findViewById(R.id.country_name);
-        TextView city_id = (TextView)view.findViewById(R.id.city_id);
+        TextView city    = (TextView) view.findViewById(R.id.city_name);
+        TextView country = (TextView) view.findViewById(R.id.country_name);
+        TextView city_id = (TextView) view.findViewById(R.id.city_id);
 
-        JSONObject obj = (JSONObject)getItem(position);
+        JSONObject obj = (JSONObject) getItem(position);
+        String sCountry;
 
-        if(obj == null) {
-            return view;
+        if (obj != null) {
+            try {
+                city.setText(obj.getString("name"));
+
+                sCountry = obj.getJSONObject("sys").getString("country");
+                country.setText(sCountry);
+
+                city_id.setText(Integer.toString(obj.getInt("id")));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        try {
-            city.setText(obj.getString("name"));
-
-            String sCountry = obj.getJSONObject("sys").getString("country");
-            country.setText(sCountry);
-
-            city_id.setText(Integer.toString(obj.getInt("id")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return view;
     }
 
