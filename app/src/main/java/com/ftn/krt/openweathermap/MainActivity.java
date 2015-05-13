@@ -16,7 +16,29 @@
  *
  * \file MainActivity.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of MainActivity of
+ *      OpenWeatherMap application.
+ *
+ *      This activity shows current city and it's country,
+ *      has search Floating Action Button which leads user to
+ *      the city search activity, and a ListView with
+ *      daily forecast info.
+ *
+ *      Data can be forced for re-fetching by pulling down the
+ *      forecast data list view. Data will be automatically updated
+ *      every hour, while application is running and has focus.
+ *
+ *      Implements ForecastDataListener and forwards forecast data
+ *      to the ForecastDataAdapter.
+ *
+ *      Pressing search button will start search activity and when
+ *      user chooses a city, result will be returned to this activity.
+ *      After that, new location ID will be set for ForecastDataService.
+ *
+ *      Start/stop of this activity does connect to/disconnect from service.
+ *
+ *      By default it will try to show weather forecast for Novi Sad.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
@@ -47,7 +69,7 @@ import org.json.JSONObject;
 public class MainActivity extends ActionBarActivity implements ForecastDataListener, SwipeRefreshLayout.OnRefreshListener {
     private boolean mBound = false;
     private final String TAG = "MAIN_ACTIVITY";
-    private String mLocationID = "3194360";
+    private String mLocationID = "3194360"; // Novi Sad ID
 
     private ForecastDataService mService;
     private ForecastDataAdapter mAdapter;
