@@ -104,7 +104,16 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             TextView city_id = (TextView)view.findViewById(R.id.city_id);
-            Log.d(TAG, "User clicked on: " + city_id.getText().toString());
+            TextView city_name = (TextView)view.findViewById(R.id.city_name);
+            TextView country_name = (TextView)view.findViewById(R.id.country_name);
+
+            Intent i = new Intent();
+            setResult(RESULT_OK, i);
+            i.putExtra("city_id", city_id.getText().toString());
+            i.putExtra("city_name", city_name.getText().toString());
+            i.putExtra("country_name", country_name.getText().toString());
+
+            finish();
         }
     }
 }

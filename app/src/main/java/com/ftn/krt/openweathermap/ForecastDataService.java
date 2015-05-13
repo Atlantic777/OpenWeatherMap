@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
 public class ForecastDataService extends Service {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final int REFETCH_INTERVAL = 1;
-    private String mQueryURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London,UK&units=metric&mode=json";
+    private String mLocationID;
+    private String mQueryURL = "http://api.openweathermap.org/data/2.5/forecast/daily?units=metric&mode=json&cnt=5&id=";
 
     private final IBinder mBinder = new LocalBinder();
     private final Runnable mBeeper = new Runnable() {
@@ -40,9 +41,9 @@ public class ForecastDataService extends Service {
     }
 
     public void forceFetch() {
-        if(mListener != null) {
+        if(mListener != null && mLocationID != null) {
             ForecastClient client = new ForecastClient(mListener);
-            client.execute(mQueryURL);
+            client.execute(mQueryURL+mLocationID);
         }
     }
 
@@ -56,5 +57,10 @@ public class ForecastDataService extends Service {
             mListener = null;
             beeperHandle.cancel(true);
         }
+    }
+
+    public void setLocation(String locationID) {
+        mLocationID = locationID;
+        forceFetch();
     }
 }

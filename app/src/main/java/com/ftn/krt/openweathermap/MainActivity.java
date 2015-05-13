@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
     ListView mList;
     SwipeRefreshLayout mSwipeLayout;
     private final String TAG = "MAIN_ACTIVITY";
+    private String mLocationID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,16 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
     @Override
     public void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, ForecastDataService.class);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Intent intent = new Intent(this, ForecastDataService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        Log.d(TAG, "Activity restarted");
     }
 
     @Override
@@ -112,6 +121,8 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
             mService = binder.getService();
             mService.setForecastDataListener(mListener);
             mBound = true;
+
+            mService.setLocation(mLocationID);
         }
 
         @Override
@@ -143,10 +154,26 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
         }
     }
 
+    protected void setLocation(String locationID) {
+        mLocationID = locationID;
+
+        if(mBound) {
+            mService.setLocation(mLocationID);
+        }
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 0) {
             if(resultCode == RESULT_OK) {
-                Log.d(TAG, "User finished search");
+                setLocation(data.getStringExtra("city_id"));
+
+                TextView city = (TextView)findViewById(R.id.city);
+                TextView country = (TextView)findViewById(R.id.country);
+
+                city.setText(data.getStringExtra("city_name"));
+                country.setText(data.getStringExtra("country_name"));
+
+                mSwipeLayout.setRefreshing(true);
             }
             else if(resultCode == RESULT_CANCELED) {
                 Log.d(TAG, "User canceled search");
