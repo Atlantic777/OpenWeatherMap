@@ -29,13 +29,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/search_negative_text"
-            android:background="#FF4500"/>
+            />
         <Button
             android:id="@+id/search_positive"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/button_material_light"
             android:text="@string/search_positive_text"/>
     </LinearLayout>
 

@@ -3,13 +3,21 @@ package com.ftn.krt.openweathermap;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends ActionBarActivity implements CityDataListener {
+    private final String TAG = "SEARCH_ACTIVITY";
+    private CityDataAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +34,11 @@ public class SearchActivity extends ActionBarActivity {
         Button search = (Button)findViewById(R.id.search_positive);
 
         cancel.setOnClickListener(new NegativeListener());
-        search.setOnClickListener(new PositiveListener());
+        search.setOnClickListener(new PositiveListener(this));
+
+        mAdapter = new CityDataAdapter(this);
+        ListView list = (ListView)findViewById(R.id.search_list);
+        list.setAdapter(mAdapter);
 
         return true;
     }
@@ -46,6 +58,16 @@ public class SearchActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void pushCityData(String cityData) {
+        try {
+            JSONObject obj = new JSONObject(cityData);
+            mAdapter.setData(obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     class NegativeListener implements View.OnClickListener {
 
         @Override
@@ -57,12 +79,20 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     class PositiveListener implements  View.OnClickListener {
+        CityDataListener mListener;
+
+        PositiveListener(CityDataListener listener) {
+            mListener = listener;
+        }
 
         @Override
         public void onClick(View v) {
-            Intent returnIntent = new Intent();
-            setResult(RESULT_OK, returnIntent);
-            finish();
+            EditText city = (EditText)findViewById(R.id.input_city);
+            EditText country = (EditText)findViewById(R.id.input_country);
+
+            CityClient a = new CityClient(mListener);
+
+            a.execute(city.getText().toString(),country.getText().toString());
         }
     }
 }

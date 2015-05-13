@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 
 /**
  * Created by nikola on 5/7/15.
@@ -26,7 +25,6 @@ public class ForecastClient extends AsyncTask<String, String, String> {
     private final String TAG = "client";
     private String image_url = "http://openweathermap.org/img/w/";
     private final String IMAGE_FORMAT = ".png";
-    private ArrayList<Image> imageIcons;
 
     ForecastClient(ForecastDataListener listener) {
         mListener = listener;
