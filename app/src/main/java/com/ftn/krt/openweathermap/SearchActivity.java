@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,17 +32,48 @@ public class SearchActivity extends ActionBarActivity implements CityDataListene
         setContentView(R.layout.activity_search);
 
         Button cancel = (Button)findViewById(R.id.search_negative);
-        Button search = (Button)findViewById(R.id.search_positive);
+        final Button search = (Button)findViewById(R.id.search_positive);
 
         cancel.setOnClickListener(new NegativeListener());
         search.setOnClickListener(new PositiveListener(this));
+
+        search.setEnabled(false);
 
         mAdapter = new CityDataAdapter(this);
         ListView list = (ListView)findViewById(R.id.search_list);
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(new CityItemClickListener());
+        list.setEmptyView(findViewById(R.id.cities_empty));
 
         mSwipeLayout = (SwipeRefreshLayout)findViewById(R.id.cities_swipe_container);
+
+        EditText city_input = (EditText)findViewById(R.id.input_city);
+        final EditText country_input = (EditText)findViewById(R.id.input_country);
+        country_input.setEnabled(false);
+
+        city_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0) {
+                    country_input.setEnabled(true);
+                    search.setEnabled(true);
+                }
+                else {
+                    country_input.setEnabled(false);
+                    search.setEnabled(false);
+                }
+            }
+        });
     }
 
     @Override

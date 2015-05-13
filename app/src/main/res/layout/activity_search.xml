@@ -38,6 +38,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/search_positive_text"/>
+
+
+
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -49,7 +52,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
+
+        <TextView
+            android:id="@+id/cities_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sorry, no results!" />
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 
 </LinearLayout>
