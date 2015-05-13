@@ -13,12 +13,14 @@
         android:id="@+id/input_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/input_city_hint" />
+        android:hint="@string/input_city_hint"
+        android:inputType="textImeMultiLine" />
     <EditText
         android:id="@+id/input_country"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/input_country_hint"/>
+        android:hint="@string/input_country_hint"
+        android:inputType="textImeMultiLine" />
 
     <LinearLayout
         android:layout_width="match_parent"
