@@ -19,11 +19,12 @@ import java.util.Date;
 
 /**
  * Created by nikola on 5/9/15.
+ *
  */
 public class ForecastDataAdapter extends BaseAdapter {
     private JSONObject mDailyForecast;
     private Context mContext;
-    private final String TAG = "ADAPTER";
+    private final char DEG = (char) 0x00B0;
 
     public ForecastDataAdapter(Context ctx) {
         mContext = ctx;
@@ -31,16 +32,14 @@ public class ForecastDataAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        int val;
+        int val = 0;
 
-        if(mDailyForecast == null) {
-            return 0;
-        }
-        try {
-            val = mDailyForecast.getInt("cnt");
-        } catch (Exception e) {
-            val = 0;
-            e.printStackTrace();
+        if (mDailyForecast != null) {
+            try {
+                val = mDailyForecast.getInt("cnt");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return val;
@@ -48,13 +47,14 @@ public class ForecastDataAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        Object rv;
+        Object rv = null;
 
-        try {
-            rv = mDailyForecast.getJSONArray("list").get(position);
-        } catch (Exception e) {
-            rv = null;
-            e.printStackTrace();
+        if (mDailyForecast != null) {
+            try {
+                rv = mDailyForecast.getJSONArray("list").get(position);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return rv;
@@ -69,27 +69,27 @@ public class ForecastDataAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        if(view == null) {
+        if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.forecast_data_row, null);
         }
 
-        ImageView image = (ImageView)view.findViewById(R.id.image);
-        TextView  text  = (TextView)view.findViewById(R.id.text);
-        TextView  min = (TextView)view.findViewById(R.id.min);
-        TextView  max = (TextView)view.findViewById(R.id.max);
-        TextView  date = (TextView)view.findViewById(R.id.date);
-        TextView  morning = (TextView)view.findViewById(R.id.morn);
-        TextView  evening = (TextView)view.findViewById(R.id.eve);
-        TextView  night = (TextView)view.findViewById(R.id.night);
+        ImageView image = (ImageView) view.findViewById(R.id.image);
+        TextView text = (TextView) view.findViewById(R.id.text);
+        TextView min = (TextView) view.findViewById(R.id.min);
+        TextView max = (TextView) view.findViewById(R.id.max);
+        TextView date = (TextView) view.findViewById(R.id.date);
+        TextView morning = (TextView) view.findViewById(R.id.morn);
+        TextView evening = (TextView) view.findViewById(R.id.eve);
+        TextView night = (TextView) view.findViewById(R.id.night);
 
         SimpleDateFormat df = new SimpleDateFormat("dd MMM ''yy");
 
 
-        JSONObject obj = (JSONObject)getItem(position);
+        JSONObject obj = (JSONObject) getItem(position);
 
-        if(obj == null) {
+        if (obj == null) {
             return view;
         }
 
@@ -98,25 +98,23 @@ public class ForecastDataAdapter extends BaseAdapter {
             byte[] b_image;
             s_image = obj.getString("icon_img");
             b_image = Base64.decode(s_image, Base64.DEFAULT);
-            image.setImageBitmap(BitmapFactory.decodeByteArray(b_image,0,b_image.length));
+            image.setImageBitmap(BitmapFactory.decodeByteArray(b_image, 0, b_image.length));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            char deg = (char)0x00B0;
-
             JSONObject temp = obj.getJSONObject("temp");
             JSONObject weather = obj.getJSONArray("weather").getJSONObject(0);
 
-            min.setText(Integer.toString(temp.getInt("min"))+deg);
-            max.setText(Integer.toString(temp.getInt("max"))+deg);
-            morning.setText(Integer.toString(temp.getInt("morn"))+deg);
-            evening.setText(Integer.toString(temp.getInt("eve"))+deg);
-            night.setText(Integer.toString(temp.getInt("night"))+deg);
+            min.setText(Integer.toString(temp.getInt("min")) + DEG);
+            max.setText(Integer.toString(temp.getInt("max")) + DEG);
+            morning.setText(Integer.toString(temp.getInt("morn")) + DEG);
+            evening.setText(Integer.toString(temp.getInt("eve")) + DEG);
+            night.setText(Integer.toString(temp.getInt("night")) + DEG);
 
-            Date d = new Date(obj.getLong("dt")*1000);
+            Date d = new Date(obj.getLong("dt") * 1000);
             date.setText(df.format(d));
 
             text.setText(weather.getString("description"));
@@ -124,7 +122,6 @@ public class ForecastDataAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return view;
     }
