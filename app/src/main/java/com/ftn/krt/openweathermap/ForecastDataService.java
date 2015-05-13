@@ -16,7 +16,27 @@
  *
  * \file ForecastDataService.java
  * \brief
- *      This file contains...
+ *      This file contains ForecastDataService class
+ *      which is an Android service for forecast data fetching.
+ *
+ *      It needs a listener and location ID to function properly,
+ *      both of which can be set by corresponding public methods.
+ *
+ *      When there are clients bound, it will spawn a scheduled task
+ *      which will fetch updates every 1 hour. When last client unbinds,
+ *      it will stop automatic updates.
+ *
+ *      It also has a force fetch feature which can be activated by
+ *      calling the forceFetch() public method.
+ *
+ *      On every data fetch request, it spawns a new ForecastClient.
+ *
+ *      URL request options are hardcoded this way:
+ *       - daily forecast
+ *       - for 5 days
+ *       - in metric units
+ *       - and in JSON format
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
