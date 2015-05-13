@@ -16,7 +16,16 @@
  *
  * \file CityDataAdapter.java
  * \brief
- *      This file contains...
+ *      This file contains implementation of CityDataAdapter class
+ *      which is used for inflating and presentation of city search results.
+ *
+ *      Data is whole JSON object received as response to search request. New data
+ *      can be set by calling the setData() method.
+ *
+ *      It inflates city_data_row layout.
+ *
+ *      It will put data about city name, country name and city ID.
+ *
  * Created on 13.05.2015
  *
  * @Author Nikola Hardi
@@ -33,11 +42,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.json.JSONObject;
-
-/**
- * Created by nikola on 5/13/15.
- *
- */
 
 public class CityDataAdapter extends BaseAdapter {
     private JSONObject mCityData;
