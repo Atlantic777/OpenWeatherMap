@@ -80,6 +80,9 @@ public class ForecastDataAdapter extends BaseAdapter {
         TextView  min = (TextView)view.findViewById(R.id.min);
         TextView  max = (TextView)view.findViewById(R.id.max);
         TextView  date = (TextView)view.findViewById(R.id.date);
+        TextView  morning = (TextView)view.findViewById(R.id.morn);
+        TextView  evening = (TextView)view.findViewById(R.id.eve);
+        TextView  night = (TextView)view.findViewById(R.id.night);
 
         SimpleDateFormat df = new SimpleDateFormat("dd MMM ''yy");
 
@@ -102,14 +105,21 @@ public class ForecastDataAdapter extends BaseAdapter {
         }
 
         try {
+            char deg = (char)0x00B0;
+
             JSONObject temp = obj.getJSONObject("temp");
-            min.setText(Integer.toString(temp.getInt("min")));
-            max.setText(Integer.toString(temp.getInt("max")));
+            JSONObject weather = obj.getJSONArray("weather").getJSONObject(0);
+
+            min.setText(Integer.toString(temp.getInt("min"))+deg);
+            max.setText(Integer.toString(temp.getInt("max"))+deg);
+            morning.setText(Integer.toString(temp.getInt("morn"))+deg);
+            evening.setText(Integer.toString(temp.getInt("eve"))+deg);
+            night.setText(Integer.toString(temp.getInt("night"))+deg);
 
             Date d = new Date(obj.getLong("dt")*1000);
-
             date.setText(df.format(d));
 
+            text.setText(weather.getString("description"));
 
         } catch (Exception e) {
             e.printStackTrace();

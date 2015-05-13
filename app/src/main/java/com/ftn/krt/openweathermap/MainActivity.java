@@ -101,6 +101,7 @@ public class MainActivity extends ActionBarActivity implements ForecastDataListe
         mSwipeLayout.setRefreshing(true);
         Log.d(TAG, Boolean.toString(mBound));
         if (mBound) {
+            mService.setLocation(mLocationID);
             mService.forceFetch();
             Log.d(TAG, "Called the ForecastDataService");
         }
