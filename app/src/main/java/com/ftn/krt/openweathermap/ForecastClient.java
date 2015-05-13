@@ -1,14 +1,11 @@
 package com.ftn.krt.openweathermap;
 
-import android.media.Image;
 import android.os.AsyncTask;
 import android.util.Base64;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -19,11 +16,12 @@ import java.io.ByteArrayOutputStream;
 
 /**
  * Created by nikola on 5/7/15.
+ *
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class ForecastClient extends AsyncTask<String, String, String> {
     private ForecastDataListener mListener;
-    private final String TAG = "client";
-    private String image_url = "http://openweathermap.org/img/w/";
+    private final String IMAGE_URL = "http://openweathermap.org/img/w/";
     private final String IMAGE_FORMAT = ".png";
 
     ForecastClient(ForecastDataListener listener) {
@@ -33,15 +31,21 @@ public class ForecastClient extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... uri) {
         HttpClient httpClient = new DefaultHttpClient();
+
         HttpResponse response;
-        String responseString = null;
+        String responseString = "";
+        StatusLine statusLine;
+
         JSONObject obj = new JSONObject();
+        JSONArray list;
+        JSONObject weather;
+        String sImg;
 
         try {
             response = httpClient.execute(new HttpGet(uri[0]));
-            StatusLine statusLine = response.getStatusLine();
+            statusLine = response.getStatusLine();
 
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
+            if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 response.getEntity().writeTo(out);
                 responseString = out.toString();
@@ -49,37 +53,30 @@ public class ForecastClient extends AsyncTask<String, String, String> {
             }
 
             obj = new JSONObject(responseString);
-            JSONArray  list = obj.getJSONArray("list");
-
+            list = obj.getJSONArray("list");
 
             int cnt = obj.getInt("cnt");
-            String img;
-            JSONObject weather;
 
-            for(int i = 0; i < cnt; i++) {
+
+            for (int i = 0; i < cnt; i++) {
                 weather = list.getJSONObject(i).getJSONArray("weather").getJSONObject(0);
-                img = weather.getString("icon");
+                sImg = weather.getString("icon");
 
-                response = httpClient.execute(new HttpGet(image_url + img + IMAGE_FORMAT));
+                response = httpClient.execute(new HttpGet(IMAGE_URL + sImg + IMAGE_FORMAT));
                 statusLine = response.getStatusLine();
 
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
                     list.getJSONObject(i).put("icon_img", Base64.encodeToString(out.toByteArray(), Base64.DEFAULT));
                     out.close();
-                    Log.d(TAG, image_url + img + IMAGE_FORMAT);
                 }
             }
-
-        } catch(ClientProtocolException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        Log.d(TAG, obj.toString());
-        return obj.toString(); //responseString;
+        return obj.toString();
     }
 
     @Override
